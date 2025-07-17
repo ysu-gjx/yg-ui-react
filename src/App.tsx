@@ -6,7 +6,10 @@ import {
 	useContext,
 } from 'react'
 import type { CSSProperties, ChangeEvent, PropsWithChildren, Ref } from 'react'
-import Calendar from './components/Calendar'
+import Calendar from './components/Calendar/index'
+
+import dayjs from 'dayjs'
+
 // import './App.css'
 interface CalendarRef {
 	getData: () => Date
@@ -14,6 +17,10 @@ interface CalendarRef {
 }
 function App() {
 	const calendarRef = useRef<CalendarRef>(null)
+
+	console.log(dayjs().daysInMonth())
+	console.log(dayjs().startOf('month').day())
+	console.log(dayjs().endOf('month').format('YYYY-MM-DD'))
 
 	return (
 		<main>
@@ -24,9 +31,10 @@ function App() {
 				Click
 			</button>
 			<Calendar
-				defaultValue={new Date('2023-01-01')}
+				style={{ width: '80%' }}
+				locale='en-US'
 				onChange={(date) => {
-					console.log(date)
+					console.log(date.format('YYYY-MM-DD'))
 				}}
 				ref={calendarRef}
 			/>
