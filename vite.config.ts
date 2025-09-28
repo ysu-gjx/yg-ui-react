@@ -41,6 +41,18 @@ export default defineConfig({
         },
         setupFiles: ['.storybook/vitest.setup.ts']
       }
+    }, {
+      test: {
+        name: 'hooks',
+        browser: {
+          enabled: true,
+          headless: true,
+          provider: 'playwright',
+          instances: [{
+            browser: 'chromium'
+          }]
+        },
+      }
     }]
   }
 });
