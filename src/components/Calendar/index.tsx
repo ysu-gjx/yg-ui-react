@@ -5,7 +5,7 @@ import { type Ref, type CSSProperties, type ReactNode, useState } from 'react'
 import dayjs from 'dayjs'
 import { Dayjs } from 'dayjs'
 import cs from 'classnames'
-import LocaleContext from './LocalContext'
+import LocaleContext from './LocaleContext'
 import { useControllableValue } from 'ahooks'
 
 export interface CalendarProps {
@@ -22,7 +22,7 @@ export interface CalendarProps {
 	onChange?: (date: Dayjs) => void
 	ref: Ref<CalendarRef>
 }
-interface CalendarRef {
+export interface CalendarRef {
 	getData: () => Date
 	setData: (date: Date) => void
 }

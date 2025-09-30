@@ -4,40 +4,41 @@ import {
 	useImperativeHandle,
 	createContext,
 	useContext,
+	useEffect,
 } from 'react'
 import type { CSSProperties, ChangeEvent, PropsWithChildren, Ref } from 'react'
-import Calendar from './components/Calendar/index'
 
+import { IconAdd } from '@/components/Icon/icons/IconAdd'
+import { createFromIconfont } from './components/Icon/createFromIconfont'
+import { Icon } from '@/components/Icon/index'
 import dayjs from 'dayjs'
+import SettingsIcon from '@/assets/svg/settings.svg?react'
 
-// import './App.css'
-interface CalendarRef {
-	getData: () => Date
-	setData: (date: Date) => void
-}
+const Iconfont = createFromIconfont(
+	'//at.alicdn.com/t/c/font_2042259_1fl7yj75s7j.js'
+)
+
+const ele = (props: React.SVGAttributes<SVGElement>) => (
+	<svg viewBox="0 0 32 32" {...props}>
+		<circle cx="16" cy="16" r="14" />
+	</svg>
+)
 function App() {
-	const calendarRef = useRef<CalendarRef>(null)
+	const addRef = useRef(null)
 
-	console.log(dayjs().daysInMonth())
-	console.log(dayjs().startOf('month').day())
-	console.log(dayjs().endOf('month').format('YYYY-MM-DD'))
+	useEffect(() => {
+		console.log(addRef.current)
+	}, [])
 
 	return (
 		<main>
-			<button
-				onClick={() => console.log(calendarRef.current?.getData())}
-				color="red"
-			>
-				Click
-			</button>
-			<Calendar
-				style={{ width: '80%' }}
-				locale='en-US'
-				onChange={(date) => {
-					console.log(date.format('YYYY-MM-DD'))
-				}}
-				ref={calendarRef}
-			/>
+			<Button onClick={() => console.log(addRef.current)} color="red">
+				click
+			</Button>
+			<IconAdd ref={addRef} size="30px" color="red" />
+			<Iconfont type="icon-loading" size="40px" spin />
+			<Icon component={ele} size="30px" color="blue" />
+			<Icon component={SettingsIcon} size="30px" color="red" />
 		</main>
 	)
 }
@@ -45,7 +46,7 @@ function App() {
 export default App
 
 type Props = PropsWithChildren<{
-	ref: Ref<HTMLDivElement>
+	ref?: Ref<HTMLDivElement>
 	color: CSSProperties['color']
 }>
 function Button({ children, ref, color, ...props }: Props) {

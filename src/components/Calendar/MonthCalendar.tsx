@@ -1,7 +1,7 @@
 import type { Dayjs } from 'dayjs'
 import type { CalendarProps } from './index'
 import { useContext } from 'react'
-import LocaleContext from './LocalContext'
+import LocaleContext from './LocaleContext'
 import allLocales from './locale'
 import cs from 'classnames'
 // import CalendarLocale from './locale/zh-CN'
