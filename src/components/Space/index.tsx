@@ -1,0 +1,91 @@
+import React, { Fragment } from 'react'
+import classNames from 'classnames'
+import './index.scss'
+import { ConfigContext } from './ConfigProvider'
+
+export type SizeType = 'small' | 'middle' | 'large' | number
+export interface SpaceProps extends React.HTMLAttributes<HTMLDivElement> {
+	className?: string
+	style?: React.CSSProperties
+	size?: SizeType | [SizeType, SizeType]
+	direction?: 'vertical' | 'horizontal'
+	align?: 'start' | 'center' | 'end' | 'baseline'
+	split?: React.ReactNode
+	wrap?: boolean
+}
+
+const spaceSize = {
+	small: 8,
+	middle: 16,
+	large: 24,
+}
+
+function getNumberSize(size: SizeType) {
+	return typeof size === 'string' ? spaceSize[size] : size || 0
+}
+
+export const Space = (props: SpaceProps) => {
+	const { size: configSize } = React.use(ConfigContext)
+
+	const {
+		className,
+		style,
+		children,
+		size = configSize || 'small',
+		direction = 'horizontal',
+		align,
+		split,
+		wrap = false,
+		...otherProps
+	} = props
+
+	const childNodes = React.Children.toArray(children)
+
+	const mergeAlign =
+		direction === 'horizontal' && align === undefined ? 'center' : align
+
+	const cn = classNames(
+		'space',
+		`space-${direction}`,
+		{
+			[`space-align-${mergeAlign}`]: mergeAlign,
+		},
+		className
+	)
+
+	const nodes = childNodes.map((child: any, index) => {
+		const key = (child && child.key) || `space-item-${index}`
+
+		return (
+			<Fragment key={key}>
+				<div className="space-item">{child}</div>
+				{index < childNodes.length - 1 && split && (
+					<span className={`space-item-split`} style={style}>
+						{split}
+					</span>
+				)}
+			</Fragment>
+		)
+	})
+
+	const otherStyles: React.CSSProperties = {}
+
+	const [horizontalSize, verticalSize] = React.useMemo(() => {
+		return (Array.isArray(size) ? size : [size, size]).map((item) =>
+			getNumberSize(item)
+		)
+	}, [size])
+
+	otherStyles.columnGap = horizontalSize
+	otherStyles.rowGap = verticalSize
+
+	if (wrap) {
+		otherStyles.flexWrap = 'wrap'
+	}
+
+	return (
+		<div className={cn} style={{ ...otherStyles, ...style }} {...otherProps}>
+			{nodes}
+		</div>
+	)
+}
