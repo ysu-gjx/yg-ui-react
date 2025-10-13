@@ -7,65 +7,16 @@ import {
 	useEffect,
 } from 'react'
 import type { CSSProperties, ChangeEvent, PropsWithChildren, Ref } from 'react'
-import { Space } from '@/components/Space'
-import { ConfigContext } from './components/Space/ConfigProvider'
-
+import { Portal } from './components/Portal'
 function App() {
-	const addRef = useRef(null)
+	const ref = useRef<HTMLDivElement>(null)
 
-	useEffect(() => {
-		console.log(addRef.current)
-	}, [])
-
-	return (
-		<main>
-			<ConfigContext value={{ size: 'large' }}>
-				<Space
-					direction="horizontal"
-					align="end"
-					wrap
-					split={
-						<div
-							style={{ width: '100px', height: '100px', background: 'blue' }}
-						>
-							22
-						</div>
-					}
-				>
-					<div
-						className="box"
-						style={{ width: '100px', height: '100px', background: 'red' }}
-					>
-						1
-					</div>
-					<div
-						className="box"
-						style={{ width: '100px', height: '100px', background: 'red' }}
-					>
-						1
-					</div>
-					<div
-						className="box"
-						style={{ width: '100px', height: '100px', background: 'red' }}
-					>
-						1
-					</div>
-					<div
-						className="box"
-						style={{ width: '100px', height: '100px', background: 'red' }}
-					>
-						1
-					</div>
-					<div
-						className="box"
-						style={{ width: '100px', height: '100px', background: 'red' }}
-					>
-						1
-					</div>
-				</Space>
-			</ConfigContext>
-		</main>
+	const content = (
+		<div>
+			<button onClick={() => console.log(ref.current)}>button</button>
+		</div>
 	)
+	return <Portal ref={ref}>{content}</Portal>
 }
 
 export default App
