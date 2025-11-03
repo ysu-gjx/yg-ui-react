@@ -7,49 +7,20 @@ import {
   useEffect,
 } from 'react'
 import type { CSSProperties, ChangeEvent, PropsWithChildren, Ref } from 'react'
-import MutateObserver from './components/MutateObserver/index'
+import CopyToClipboard from './components/CopyToClipboard'
+
 function App() {
   const ref = useRef<HTMLDivElement>(null)
 
-  const content = (
-    <div>
-      <button
-        onClick={() => {
-          const el = document.getElementById('test')
-          if (el) {
-            el.style.color = 'blue'
-            return
-          }
-          const div = document.createElement('div')
-          div.id = 'test'
-          div.innerHTML = 'hello world'
-          div.style.color = 'red'
-          document.body.appendChild(div)
-        }}
-      >
-        button
-      </button>
-    </div>
-  )
-
   return (
-    <MutateObserver
-      target="body"
-      onMutate={(mutationsList, observer) => {
-        console.log(mutationsList, observer)
-        for (const mutation of mutationsList) {
-          if (mutation.type === 'childList') {
-            console.log('A child node has been added or removed.')
-          } else if (mutation.type === 'attributes') {
-            console.log(
-              'The ' + mutation.attributeName + ' attribute was modified.'
-            )
-          }
-        }
+    <CopyToClipboard
+      text="Hello, World!"
+      onCopy={() => {
+        console.log('done')
       }}
     >
-      {content}
-    </MutateObserver>
+      <div onClick={() => alert(1)}>copy</div>
+    </CopyToClipboard>
   )
 }
 
